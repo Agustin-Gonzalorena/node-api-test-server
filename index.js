@@ -12,14 +12,18 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello World" });
 });
 app.get("/api", (req, res) => {
-  checkDate();
+  const newDate = new Date();
+  const day = newDate.getDate();
+  const month = newDate.getMonth() + 1;
+  const fechaActual = `${day}/${month}`;
+  checkDate(fechaActual);
   fs.readFile("respuesta.txt", "utf-8", (err, data) => {
     if (err) throw err;
     res.json({ message: data });
   });
 });
 
-const PORT = 80;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

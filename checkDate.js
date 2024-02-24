@@ -3,24 +3,19 @@ import { consultOpenai } from "./openai.js";
 
 //const fechaActual = "25/1";
 
-const newDate = new Date();
-const day = newDate.getDate();
-const month = newDate.getMonth() + 1;
-const fechaActual = `${day}/${month}`;
-
-export const checkDate = () => {
+export const checkDate = (fechaActual) => {
   fs.readFile("lastAnswer.txt", "utf-8", (err, data) => {
     if (err) throw err;
     let currentDate = data;
     if (currentDate === fechaActual) {
       return;
     } else {
-      askOpenai();
+      askOpenai(fechaActual);
     }
   });
 };
 
-const askOpenai = async () => {
+const askOpenai = async (fechaActual) => {
   let data = await consultOpenai({ stringDate: fechaActual });
   fs.writeFile("lastAnswer.txt", fechaActual, (err) => {
     if (err) throw err;
