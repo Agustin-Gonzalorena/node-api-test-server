@@ -2,16 +2,25 @@ import express, { json } from "express";
 import cors from "cors";
 import { checkDate } from "./checkDate.js";
 import fs from "fs";
+import { config } from "dotenv";
+config();
 
 const app = express();
 app.use(json());
 app.disable("x-powered-by");
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello World" });
+const SHARED_KEY = process.env.SHARED_KEY;
+
+app.use("/myapi", (req, res, next) => {
+  const sharedKey = req.headers["x-shared-key"];
+  if (sharedKey !== SHARED_KEY) {
+    return res.status(401).json({ error: "Acceso no autorizado" });
+  }
+  next();
 });
-app.get("/api", (req, res) => {
+
+app.get("/myapi", (req, res) => {
   const newDate = new Date();
   const day = newDate.getDate();
   const month = newDate.getMonth() + 1;
