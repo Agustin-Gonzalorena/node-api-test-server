@@ -9,6 +9,7 @@ const app = express();
 app.use(json());
 app.disable("x-powered-by");
 app.use(cors());
+app.options("*", cors());
 
 const SHARED_KEY = process.env.SHARED_KEY;
 
@@ -33,7 +34,7 @@ app.get("/myapi", (req, res) => {
   });
 });
 
-const PORT = 3001;
+const PORT = 10301;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
